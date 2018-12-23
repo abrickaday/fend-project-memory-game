@@ -69,25 +69,53 @@ function shuffle(array) {
      // console.log(event.target);
      addToOpenCards(event.target);
    }
-
  }
 
- function addToOpenCards(card) {
-   if (openCards.length == 0) {
-     openCards.push(card);
-     console.log('1 card in openCards: ', openCards);
-   } else if (openCards.length == 1) {
-     openCards.push(card);
-     console.log('2 cards in openCards: ', openCards);
+ function showCards(card1, card2) {
+   card1.classList.add('match');
+   card2.classList.add('match');
+ }
+
+ function closeCards(card1, card2) {
+   card1.classList.remove('open', 'show');
+   card2.classList.remove('open', 'show');
+ }
+
+ function addToOpenCards(openedCard) {
+   if (openedCards.length == 0) {
+     openedCards.push(openedCard);
+     console.log('1 card in openedCards: ', openedCards);
+   } else if (openedCards.length == 1) {
+     openedCards.push(openedCard);
+     console.log('2 cards in openedCards: ', openedCards);
+
+     var openedCard1 = document.getElementById(openedCards[0].id);
+     var openedCard2 = document.getElementById(openedCards[1].id);
+
+     checkCards(openedCard1, openedCard2);
+
    } else {
-     openCards.length = 0;
-     console.log('Clear openCards: ', openCards);
-     openCards.push(card);
-     console.log('1 card in openCards: ', openCards);
+     openedCards.length = 0;
+     console.log('Clear openedCards: ', openedCards);
+     openedCards.push(openedCard);
+     console.log('1 card in openedCards: ', openedCards);
    }
  }
 
- var openCards = [];
- console.log('initial openCards: ', openCards);
+function checkCards(card1, card2) {
+  icon1 = card1.firstElementChild.className;
+  icon2 = card2.firstElementChild.className;
 
- document.querySelector('.deck').addEventListener('click', openCard);
+  if (icon1 == icon2) {
+    console.log('Cards Match!');
+    showCards(card1, card2);
+  } else {
+    console.log('Try again!');
+    setTimeout(closeCards, 500, card1, card2);
+  }
+}
+
+var openedCards = [];
+console.log('initial openedCards: ', openedCards);
+
+document.querySelector('.deck').addEventListener('click', openCard);
