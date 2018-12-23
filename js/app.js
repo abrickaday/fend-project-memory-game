@@ -120,6 +120,17 @@ function countMoves() {
     movesCounter += 1;
     console.log('movesCounter: ', movesCounter);
     document.querySelector('.moves').innerHTML = movesCounter;
+
+    if (movesCounter == 20) {
+      removeStar();
+    } else if (movesCounter == 30) {
+      removeStar();
+    } else {}
+}
+
+function removeStar() {
+    document.querySelector('.fa-star').remove();
+
 }
 
 var openedCards = [];
