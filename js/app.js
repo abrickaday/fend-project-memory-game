@@ -65,6 +65,7 @@ function shuffle(array) {
  function openCard(event) {
    if (event.target.classList.contains('open', 'show') || event.target.classList.contains('fa') || event.target.classList.contains('deck')) {}
    else {
+     countMoves();
      event.target.classList.add('open', 'show');
      // console.log(event.target);
      addToOpenCards(event.target);
@@ -115,7 +116,15 @@ function checkCards(card1, card2) {
   }
 }
 
+function countMoves() {
+    movesCounter += 1;
+    console.log('movesCounter: ', movesCounter);
+    document.querySelector('.moves').innerHTML = movesCounter;
+}
+
 var openedCards = [];
+var movesCounter = 0;
+console.log('initial movesCounter: ', movesCounter);
 console.log('initial openedCards: ', openedCards);
 
 document.querySelector('.deck').addEventListener('click', openCard);
