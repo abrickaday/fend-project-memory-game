@@ -135,7 +135,50 @@ function removeStar() {
 
 var openedCards = [];
 var movesCounter = 0;
+
+var min = 0, sec = 0;
+
+function addOneSec() {
+  sec += 1;
+  updateTimer();
+  waitOneSec();
+}
+
+function waitOneSec() {
+  setTimeout(addOneSec,1000);
+}
+
+function startTimer() {
+  waitOneSec();
+}
+
+function updateTimer() {
+  if (sec >= 60) {
+    sec = 0;
+    min += 1;
+  }
+
+  var sec_f, min_f; //formatted sec & min
+
+  if (sec < 10) {
+    sec_f = '0' + sec.toString();
+  } else {
+    sec_f = sec.toString();
+  }
+
+  if (min < 10) {
+    min_f = '0' + min.toString();
+  } else {
+    min_f = min.toString();
+  }
+
+  time = min_f + ':' + sec_f;
+
+  document.querySelector('.timer').textContent = time;
+}
+
 console.log('initial movesCounter: ', movesCounter);
 console.log('initial openedCards: ', openedCards);
 
 document.querySelector('.deck').addEventListener('click', openCard);
+document.addEventListener('DOMContentLoaded', startTimer);
