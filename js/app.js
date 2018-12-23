@@ -63,8 +63,31 @@ function shuffle(array) {
 
 
  function openCard(event) {
-   event.target.classList.add('open', 'show');
-   console.log(event.target);
+   if (event.target.classList.contains('open', 'show') || event.target.classList.contains('fa') || event.target.classList.contains('deck')) {}
+   else {
+     event.target.classList.add('open', 'show');
+     // console.log(event.target);
+     addToOpenCards(event.target);
+   }
+
  }
+
+ function addToOpenCards(card) {
+   if (openCards.length == 0) {
+     openCards.push(card);
+     console.log('1 card in openCards: ', openCards);
+   } else if (openCards.length == 1) {
+     openCards.push(card);
+     console.log('2 cards in openCards: ', openCards);
+   } else {
+     openCards.length = 0;
+     console.log('Clear openCards: ', openCards);
+     openCards.push(card);
+     console.log('1 card in openCards: ', openCards);
+   }
+ }
+
+ var openCards = [];
+ console.log('initial openCards: ', openCards);
 
  document.querySelector('.deck').addEventListener('click', openCard);
