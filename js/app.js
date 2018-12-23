@@ -12,7 +12,6 @@ cards = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle'
 console.log(cards);
 shuffle(cards);
 console.log(cards);
-
 addCard(cards);
 
 function addCard(cards) {
@@ -128,15 +127,19 @@ function countMoves() {
     } else {}
 }
 
+function resetMoves() {
+  movesCounter = 0;
+  document.querySelector('.moves').innerHTML = movesCounter;
+}
+
 function removeStar() {
     document.querySelector('.fa-star').remove();
-
 }
 
 var openedCards = [];
 var movesCounter = 0;
 
-var min = 0, sec = 0;
+var min, sec, timeOut;
 
 function addOneSec() {
   sec += 1;
@@ -145,11 +148,18 @@ function addOneSec() {
 }
 
 function waitOneSec() {
-  setTimeout(addOneSec,1000);
+  timeOut = setTimeout(addOneSec,1000);
 }
 
 function startTimer() {
+  min = 0;
+  sec = 0;
   waitOneSec();
+}
+
+function resetTimer() {
+  clearTimeout(timeOut);
+  document.querySelector('.timer').textContent = '00:00';
 }
 
 function updateTimer() {
@@ -177,8 +187,39 @@ function updateTimer() {
   document.querySelector('.timer').textContent = time;
 }
 
+function clearCards() {
+  document.querySelector('.deck').innerHTML = '';
+}
+
+function resetStars() {
+  var stars = document.querySelector('.stars');
+  stars.innerHTML = '';
+
+  for (var i=0; i < 3; i++) {
+    //create a new li element
+    var newLi = document.createElement('li');
+    //create a new i createElement
+    var newI = document.createElement('i');
+    newI.className = 'fa fa-star';
+    newLi.appendChild(newI);
+
+    stars.appendChild(newLi);
+   }
+}
+
+function restartGame() {
+  clearCards();
+  shuffle(cards);
+  addCard(cards);
+  resetMoves();
+  resetStars();
+  resetTimer();
+  startTimer();
+}
+
 console.log('initial movesCounter: ', movesCounter);
 console.log('initial openedCards: ', openedCards);
 
 document.querySelector('.deck').addEventListener('click', openCard);
 document.addEventListener('DOMContentLoaded', startTimer);
+document.querySelector('.restart').addEventListener('click', restartGame);
