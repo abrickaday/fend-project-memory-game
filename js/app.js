@@ -109,9 +109,24 @@ function checkCards(card1, card2) {
   if (icon1 == icon2) {
     console.log('Cards Match!');
     showCards(card1, card2);
+    pairsCounter += 1;
+    checkWin();
   } else {
     console.log('Try again!');
     setTimeout(closeCards, 500, card1, card2);
+  }
+}
+
+function checkWin() {
+  if (pairsCounter == 8) {
+    stopTimer();
+    console.log('You Win!');
+    modal.style.display = "block";
+    var winStars = document.querySelector('.score-panel').firstElementChild.innerHTML;
+    document.getElementById('winning-stars').innerHTML = winStars;
+    var winTime = document.querySelector('.timer').textContent;
+    document.getElementById('winning-timer').textContent = winTime;
+    document.getElementById('winning-moves').innerHTML = movesCounter;
   }
 }
 
@@ -119,7 +134,6 @@ function countMoves() {
     movesCounter += 1;
     console.log('movesCounter: ', movesCounter);
     document.querySelector('.moves').innerHTML = movesCounter;
-
     if (movesCounter == 20) {
       removeStar();
     } else if (movesCounter == 30) {
@@ -133,13 +147,14 @@ function resetMoves() {
 }
 
 function removeStar() {
-    document.querySelector('.fa-star').remove();
+    document.querySelector('.stars').firstElementChild.remove();
 }
 
 var openedCards = [];
 var movesCounter = 0;
 
 var min, sec, timeOut;
+var pairsCounter = 0;
 
 function addOneSec() {
   sec += 1;
@@ -160,6 +175,10 @@ function startTimer() {
 function resetTimer() {
   clearTimeout(timeOut);
   document.querySelector('.timer').textContent = '00:00';
+}
+
+function stopTimer() {
+  clearTimeout(timeOut);
 }
 
 function updateTimer() {
@@ -214,6 +233,12 @@ function restartGame() {
   resetStars();
   resetTimer();
   document.querySelector('.deck').addEventListener('click', startTimer, { once: true, });
+  pairsCounter = 0;
+}
+
+function replayGame() {
+  modal.style.display = "none";
+  restartGame();
 }
 
 console.log('initial movesCounter: ', movesCounter);
@@ -222,3 +247,21 @@ console.log('initial openedCards: ', openedCards);
 document.querySelector('.deck').addEventListener('click', openCard);
 document.querySelector('.deck').addEventListener('click', startTimer, { once: true });
 document.querySelector('.restart').addEventListener('click', restartGame);
+document.getElementById('playBtn').addEventListener('click', replayGame);
+
+var modal = document.getElementsByClassName('modal')[0];
+var span = document.getElementsByClassName('close')[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = 'none';
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+  }
+};
+
+// https://www.w3schools.com/howto/howto_css_modals.asp
