@@ -202,7 +202,6 @@ function resetStars() {
     var newI = document.createElement('i');
     newI.className = 'fa fa-star';
     newLi.appendChild(newI);
-
     stars.appendChild(newLi);
    }
 }
@@ -214,12 +213,12 @@ function restartGame() {
   resetMoves();
   resetStars();
   resetTimer();
-  startTimer();
+  document.querySelector('.deck').addEventListener('click', startTimer, { once: true, });
 }
 
 console.log('initial movesCounter: ', movesCounter);
 console.log('initial openedCards: ', openedCards);
 
 document.querySelector('.deck').addEventListener('click', openCard);
-document.addEventListener('DOMContentLoaded', startTimer);
+document.querySelector('.deck').addEventListener('click', startTimer, { once: true });
 document.querySelector('.restart').addEventListener('click', restartGame);
