@@ -21,7 +21,8 @@ function addCard(cards) {
   for (var i=0; i < cards.length; i++) {
     //create a new li element
     var newLi = document.createElement('li');
-    newLi.className = 'card open show';
+    newLi.className = 'card';
+    newLi.id = i.toString();
     //create a new i createElement
     var newI = document.createElement('i');
     var iconClassName = 'fa fa-' + cards[i];
