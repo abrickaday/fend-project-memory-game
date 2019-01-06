@@ -1,38 +1,50 @@
-/*
- * Create a list that holds all of your cards
- */
+// list of 8 font awesome icon suffixes that shows up when a card is open
 var icons = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'bomb'];
-var cards = [];
 
+// array to hold a a total of 16 cards
+var cards = [];
+// duplicate the 8 icons twice so the cards array has 16 elements
 for (var i = 0; i < icons.length; i++) {
   cards.push(icons[i]);
   cards.push(icons[i]);
 }
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-console.log(cards);
+var openedCards = []; // max 2 cards to be added here for comparison
+var movesCounter = 0;
+var pairsCounter = 0; // number of matched pairs for keeping track whether player has won
+var min, sec, timeOut;
+
+document.querySelector('.deck').addEventListener('click', openCard);
+
+// add a one-off event listener that starts the timer when the user first open a card
+document.querySelector('.deck').addEventListener('click', startTimer, { once: true });
+document.querySelector('.restart').addEventListener('click', restartGame);
+document.getElementById('playBtn').addEventListener('click', replayGame);
+
+
+var modal = document.getElementsByClassName('modal')[0];
+var close = document.getElementsByClassName('close')[0];
+close.addEventListener('click', function() { modal.style.display = 'none'; } );
+window.addEventListener('click', function (event) { if (event.target == modal) { modal.style.display = 'none';} } );
+
 shuffle(cards);
-console.log(cards);
 addCard(cards);
+
 
 function addCard(cards) {
   var deck = document.querySelector('.deck');
 
   for (var i=0; i < cards.length; i++) {
-    //create a new li element
+    // create a new li element
     var newLi = document.createElement('li');
+    // use css class 'card' to show the cards faced down
     newLi.className = 'card';
+    // add an id for each li element
     newLi.id = i.toString();
-    //create a new i createElement
+    // create a new i element
     var newI = document.createElement('i');
     var iconClassName = 'fa fa-' + cards[i];
     newI.className = iconClassName;
-
     newLi.appendChild(newI);
     deck.appendChild(newLi);
    }
@@ -54,25 +66,12 @@ function shuffle(array) {
     return array;
 }
 
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
-
+// opening, closing or showing of cards are done by adding and removing the respective CSS classes
  function openCard(event) {
    if (event.target.classList.contains('open', 'show') || event.target.classList.contains('fa') || event.target.classList.contains('deck')) {}
    else {
      countMoves();
      event.target.classList.add('open', 'show');
-     // console.log(event.target);
      addToOpenCards(event.target);
    }
  }
@@ -90,21 +89,14 @@ function shuffle(array) {
  function addToOpenCards(openedCard) {
    if (openedCards.length == 0) {
      openedCards.push(openedCard);
-     console.log('1 card in openedCards: ', openedCards);
    } else if (openedCards.length == 1) {
      openedCards.push(openedCard);
-     console.log('2 cards in openedCards: ', openedCards);
-
      var openedCard1 = document.getElementById(openedCards[0].id);
      var openedCard2 = document.getElementById(openedCards[1].id);
-
      checkCards(openedCard1, openedCard2);
-
    } else {
      openedCards.length = 0;
-     console.log('Clear openedCards: ', openedCards);
      openedCards.push(openedCard);
-     console.log('1 card in openedCards: ', openedCards);
    }
  }
 
@@ -113,24 +105,28 @@ function checkCards(card1, card2) {
   icon2 = card2.firstElementChild.className;
 
   if (icon1 == icon2) {
-    console.log('Cards Match!');
     showCards(card1, card2);
     pairsCounter += 1;
     checkWin();
   } else {
-    console.log('Try again!');
     setTimeout(closeCards, 500, card1, card2);
   }
 }
 
 function checkWin() {
   if (pairsCounter == 8) {
+    // stop the timer
     stopTimer();
-    console.log('You Win!');
+
+    // show the win modal
     modal.style.display = "block";
+
+    // get the number of stars and total time elapsed at the point of winning
     var winStars = document.querySelector('.score-panel').firstElementChild.innerHTML;
-    document.getElementById('winning-stars').innerHTML = winStars;
     var winTime = document.querySelector('.timer').textContent;
+
+    // update the modal with the number of winning stars, time taken and moves taken
+    document.getElementById('winning-stars').innerHTML = winStars;
     document.getElementById('winning-timer').textContent = winTime;
     document.getElementById('winning-moves').innerHTML = movesCounter;
   }
@@ -138,11 +134,10 @@ function checkWin() {
 
 function countMoves() {
     movesCounter += 1;
-    console.log('movesCounter: ', movesCounter);
     document.querySelector('.moves').innerHTML = movesCounter;
-    if (movesCounter == 20) {
+    if (movesCounter == 30) {
       removeStar();
-    } else if (movesCounter == 30) {
+    } else if (movesCounter == 40) {
       removeStar();
     } else {}
 }
@@ -156,12 +151,7 @@ function removeStar() {
     document.querySelector('.stars').firstElementChild.remove();
 }
 
-var openedCards = [];
-var movesCounter = 0;
-
-var min, sec, timeOut;
-var pairsCounter = 0;
-
+// use the functions waitOneSec and addOneSec to create an infinite loop that keeps counting
 function addOneSec() {
   sec += 1;
   updateTimer();
@@ -196,19 +186,18 @@ function updateTimer() {
   var sec_f, min_f; //formatted sec & min
 
   if (sec < 10) {
-    sec_f = '0' + sec.toString();
+    sec_f = '0' + sec.toString(); // prefix a zero for 0 to 9 seconds
   } else {
     sec_f = sec.toString();
   }
 
   if (min < 10) {
-    min_f = '0' + min.toString();
+    min_f = '0' + min.toString(); // prefix a zero for 0 to 9 minutes
   } else {
     min_f = min.toString();
   }
 
-  time = min_f + ':' + sec_f;
-
+  var time = min_f + ':' + sec_f; // format to be displayed
   document.querySelector('.timer').textContent = time;
 }
 
@@ -246,28 +235,3 @@ function replayGame() {
   modal.style.display = "none";
   restartGame();
 }
-
-console.log('initial movesCounter: ', movesCounter);
-console.log('initial openedCards: ', openedCards);
-
-document.querySelector('.deck').addEventListener('click', openCard);
-document.querySelector('.deck').addEventListener('click', startTimer, { once: true });
-document.querySelector('.restart').addEventListener('click', restartGame);
-document.getElementById('playBtn').addEventListener('click', replayGame);
-
-var modal = document.getElementsByClassName('modal')[0];
-var span = document.getElementsByClassName('close')[0];
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = 'none';
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = 'none';
-  }
-};
-
-// https://www.w3schools.com/howto/howto_css_modals.asp
