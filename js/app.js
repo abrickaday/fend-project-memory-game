@@ -1,7 +1,13 @@
 /*
  * Create a list that holds all of your cards
  */
-cards = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'bomb', 'diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bomb', 'bicycle'];
+var icons = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'bomb'];
+var cards = [];
+
+for (var i = 0; i < icons.length; i++) {
+  cards.push(icons[i]);
+  cards.push(icons[i]);
+}
 
 /*
  * Display the cards on the page
