@@ -108,6 +108,7 @@ h1 {
     cursor: pointer;
 }
 
+/* reference from https://www.w3schools.com/howto/howto_css_modals.asp */
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
@@ -146,7 +147,23 @@ h1 {
   cursor: pointer;
 }
 
-.win-stars .stars li {
+.playBtn {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.winning-stars {
+  padding: 0;
+}
+
+.winning-stars li {
     list-style: none;
     display: inline-block;
 }

@@ -19,7 +19,7 @@ document.querySelector('.deck').addEventListener('click', openCard);
 // add a one-off event listener that starts the timer when the user first open a card
 document.querySelector('.deck').addEventListener('click', startTimer, { once: true });
 document.querySelector('.restart').addEventListener('click', restartGame);
-document.getElementById('playBtn').addEventListener('click', replayGame);
+document.querySelector('.playBtn').addEventListener('click', replayGame);
 
 
 var modal = document.getElementsByClassName('modal')[0];
@@ -126,9 +126,9 @@ function checkWin() {
     var winTime = document.querySelector('.timer').textContent;
 
     // update the modal with the number of winning stars, time taken and moves taken
-    document.getElementById('winning-stars').innerHTML = winStars;
-    document.getElementById('winning-timer').textContent = winTime;
-    document.getElementById('winning-moves').innerHTML = movesCounter;
+    document.querySelector('.winning-stars').innerHTML = winStars;
+    document.querySelector('.winning-timer').textContent = winTime;
+    document.querySelector('.winning-moves').innerHTML = movesCounter;
   }
 }
 
