@@ -82,8 +82,8 @@ function shuffle(array) {
  }
 
  function closeCards(card1, card2) {
-   card1.classList.remove('open', 'show');
-   card2.classList.remove('open', 'show');
+   card1.classList.remove('open', 'show', 'try-again');
+   card2.classList.remove('open', 'show', 'try-again');
  }
 
  function addToOpenCards(openedCard) {
@@ -105,10 +105,14 @@ function checkCards(card1, card2) {
   icon2 = card2.firstElementChild.className;
 
   if (icon1 == icon2) {
+    card1.classList.add('paired');
+    card2.classList.add('paired');
     showCards(card1, card2);
     pairsCounter += 1;
     checkWin();
   } else {
+    card1.classList.add('try-again');
+    card2.classList.add('try-again');
     setTimeout(closeCards, 500, card1, card2);
   }
 }
