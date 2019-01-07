@@ -225,6 +225,7 @@ function resetStars() {
 }
 
 function restartGame() {
+  openedCards = [];
   clearCards();
   shuffle(cards);
   addCard(cards);
